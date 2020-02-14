@@ -28,9 +28,15 @@ export async function activate(context: ExtensionContext) {
         );
     }
 
+    let serverArgs = [serverPath, "--transport", "stdio"];
+    let loggingLevel = workspace.getConfiguration('erlang_ls').loggingLevel;
+    if (loggingLevel !== "") {
+        serverArgs.push("--log-level", loggingLevel);
+    }
+
     let serverOptions: ServerOptions = {
         command: 'escript',
-        args: [ serverPath, "--transport", "stdio" ],
+        args: serverArgs,
         transport: TransportKind.stdio
     };
 
